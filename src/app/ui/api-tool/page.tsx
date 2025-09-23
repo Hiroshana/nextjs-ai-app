@@ -3,14 +3,15 @@
 import { useState } from "react";
 import { useChat } from "@ai-sdk/react";
 import { DefaultChatTransport } from "ai";
-import type { ChatMessage } from "@/app/api/tools/route";
+import type { ChatMessage } from "@/app/api/api-tool/route";
+import { WeatherCard } from "./weather-card";
 
-const ToolChatPage = () => {
+const APIToolChatPage = () => {
   const [input, setInput] = useState("");
 
   const { messages, sendMessage, status, error, stop } = useChat<ChatMessage>({
     transport: new DefaultChatTransport({
-      api: "/api/tools",
+      api: "/api/api-tool",
     }),
   });
 
@@ -44,9 +45,9 @@ const ToolChatPage = () => {
                       return (
                         <div
                           key={`${message.id}-getWeather-${index}`}
-                          className="bg-zinc-800/50 border border-zinc-700 p-2 rounded mt-1 mb-2"
+                          className="bg-zinc-400/50 border border-zinc-700 p-2 rounded mt-1 mb-2"
                         >
-                          <div className="text-sm text-zinc-500">
+                          <div className="text-sm text-zinc-700">
                             Receiving weather request...
                           </div>
                           <pre className="text-xs text-zinc-600 mt-1">
@@ -58,9 +59,9 @@ const ToolChatPage = () => {
                       return (
                         <div
                           key={`${message.id}-getWeather-${index}`}
-                          className="bg-zinc-800/50 border border-zinc-700 p-2 rounded mt-1 mb-2"
+                          className="bg-zinc-400/50 border border-zinc-700 p-2 rounded mt-1 mb-2"
                         >
-                          <div className="text-sm text-zinc-400">
+                          <div className="text-sm text-zinc-700">
                             Getting weather for {part.input.city}...
                           </div>
                         </div>
@@ -69,21 +70,29 @@ const ToolChatPage = () => {
                       return (
                         <div
                           key={`${message.id}-getWeather-${index}`}
-                          className="bg-zinc-800/50 border border-zinc-700 p-2 rounded mt-1 mb-2"
+                          className="bg-zinc-400/50 border border-zinc-700 p-2 rounded mt-1 mb-2"
                         >
-                          <div className="text-sm text-zinc-400">Weather</div>
-                          <div className="text-sm text-zinc-300">
-                            <div>{part.output}</div>
-                          </div>
+                          <WeatherCard weatherData={part.output} />
                         </div>
+                        // <div
+                        //   key={`${message.id}-getWeather-${index}`}
+                        //   className="bg-zinc-400/50 border border-zinc-700 p-2 rounded mt-1 mb-2"
+                        // >
+                        //   <div className="text-sm text-zinc-700">Weather</div>
+                        //   <div className="text-sm text-zinc-500">
+                        //     <div>{part.output.location.name}</div>
+                        //     <div>{part.output.current.temp_c}</div>
+                        //     <div>{part.output.current.condition.text}</div>
+                        //   </div>
+                        // </div>
                       );
                     case "output-error":
                       return (
                         <div
                           key={`${message.id}-getWeather-${index}`}
-                          className="bg-zinc-800/50 border border-zinc-700 p-2 rounded mt-1 mb-2"
+                          className="bg-zinc-400/50 border border-zinc-700 p-2 rounded mt-1 mb-2"
                         >
-                          <div className="text-sm text-zinc-400">
+                          <div className="text-sm text-zinc-700">
                             Error: {part.errorText}
                           </div>
                         </div>
@@ -139,4 +148,4 @@ const ToolChatPage = () => {
   );
 };
 
-export default ToolChatPage;
+export default APIToolChatPage;
